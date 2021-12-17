@@ -1,8 +1,33 @@
-## replacer-brunch
-
-[![Build Status](https://travis-ci.org/tkesgar/replacer-brunch.svg?branch=master)](https://travis-ci.org/tkesgar/replacer-brunch)
-
+## @firstfleet/replacer-brunch
 Ruthlessly simple string replacement plugin to [Brunch](http://brunch.io).
+
+This is a fork of (replacer-brunch)[https://github.com/firstfleetinc/replacer-brunch]. There have been some
+modifications, they are as follows.
+
+### Public url rewriting for .html files
+This fork also supports key rewriting in .html files from the assets directory. This is so when you build your front-end application for production, you can overwrite the base url in the index.html file if your app does not live at the root of the domain. See the public url rewrite section below.
+
+### Global replace
+By default, the replace method will now replace the defined key in the entire file, rather than just replacing the first instance. This was achieved by replacing the default replace definition of
+
+```js
+    if (!this.config.replace) {
+      this.config.replace = (str, key, value) => str.replace(key, value);
+    }
+```
+
+With
+
+```js
+    // Set default replace method
+    if (!this.config.replace) {
+      this.config.replace = (str, key, value) => {
+        const reg = new RegExp(key, "g");
+
+        return str.replace(reg, value);
+      };
+    }
+```
 
 ## Configuration
 
@@ -68,15 +93,75 @@ replacer: {
 }
 ```
 
+## Public URL Rewrite for index.html
+
+This is needed if you want to be able to run your dev server locally with `brunch watch --server`, and
+you also need to be able to ship your app to a domain that is not the root directory of the website. So,
+say your app will be deployed to `https://mywebsite.com/apps/appname`. Currently, if you `brunch build --production` and copy and paste your files over to the server, without making changes to the server your app won't be able to fetch your files. This is cause your files don't live at `/` which you need them to be when running your dev server, they live at `https://mywebsite.com/apps/appname`. To rewrite your public url for production, add this to your brunch config under `module.exports.plugins`.
+
+```js
+// replace keys in js files with values in the .env file
+    replacer: {
+        dict: [
+            // Replace pubnub pub key in js files
+            {
+                key: "__PUBLICURL__",
+            },
+        ],
+    },
+```
+
+This will remove the `__PUBLICURL__` when running `brunch watch --server`
+
+Then, add an override for production build.
+
+```js
+module.exports.overrides = {
+    production: {
+        plugins: {
+            // replace keys in js files with values in the .env file
+            replacer: {
+                dict: [
+                    // Replace pubnub pub key in js files
+                    {
+                        key: "__PUBLICURL__",
+                        value: "https://firstfleetinc.com/apps/ffadmindashboard",
+                    },
+                ],
+            },
+        },
+    },
+};
+```
+
+This will overwrite your key `__PUBLICURL__` when you bulid for production `brunch build --production`.
+
+Lastly, add your key `__PUBLICURL__` to your index.html file under the assets folder.
+
+```html
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+
+	<title>Admin Dashboard</title>
+
+    <link rel='icon' type='image/png' href='__PUBLICURL__/icons/favicon.png'>
+    <link rel="stylesheet" href="__PUBLICURL__/app.css" />
+    <script defer src="__PUBLICURL__/app.js"></script>
+</head>
+
+<body>
+</body>
+</html>
+```
+
+Now, when you run your development server, everything will work just as before, and when you build for production, your public url will be correctly prefexed to your index.html file.
+
 ## Installation
 
-Install the plugin via npm with `npm install --save-dev replacer-brunch`.
-
-Or, do manual install:
-
-* Add `"replacer-brunch": "~x.y.z"` to `package.json` of your brunch app.
-* If you want to use git version of plugin, use the GitHub URI
-`"replacer-brunch": "tkesgar/replacer-brunch"`.
+Install the plugin via npm with `npm install --save-dev @firstfleet/replacer-brunch`.
 
 ## License
 
@@ -86,3 +171,4 @@ Licensed under [MIT License](https://github.com/tkesgar/replacer-brunch/blob/mas
 
 * [Ted Kesgar](https://github.com/tkesgar)
 * [Chris White](https://github.com/cxw42)
+* [Jess Patton](https://github.com/Jesspu)
