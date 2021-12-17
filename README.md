@@ -156,7 +156,7 @@ module.exports.overrides = {
                     // Replace pubnub pub key in js files
                     {
                         key: "__PUBLICURL__",
-                        value: "https://firstfleetinc.com/apps/ffadmindashboard",
+                        value: "https://mywebite.com/apps/appname",
                     },
                 ],
             },
