@@ -133,7 +133,6 @@ say your app will be deployed to `https://mywebsite.com/apps/appname`. Currently
 // replace keys in js files with values in the .env file
     replacer: {
         dict: [
-            // Replace pubnub pub key in js files
             {
                 key: "__PUBLICURL__",
             },
@@ -152,7 +151,6 @@ module.exports.overrides = {
             // replace keys in js files with values in the .env file
             replacer: {
                 dict: [
-                    // Replace pubnub pub key in js files
                     {
                         key: "__PUBLICURL__",
                         value: "https://mywebite.com/apps/appname",
