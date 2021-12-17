@@ -1,7 +1,7 @@
 ## @firstfleet/replacer-brunch
 Ruthlessly simple string replacement plugin to [Brunch](http://brunch.io).
 
-This is a fork of (replacer-brunch)[https://github.com/firstfleetinc/replacer-brunch]. There have been some
+This is a fork of [replacer-brunch](https://github.com/firstfleetinc/replacer-brunch). There have been some
 modifications, they are as follows.
 
 ### Public url rewriting for .html files
