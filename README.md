@@ -29,6 +29,37 @@ With
     }
 ```
 
+### Pattern Overrirde
+You can now change the file patterns this plugin will process, and the default file pattern has been updated.
+The previous file pattern was
+
+```js
+BrunchReplacer.prototype.pattern = /\.jsx?$/;
+```
+
+and has been updated to
+
+```js
+BrunchReplacer.prototype.pattern = /\.(js|svelte|jsx)?$/;
+```
+
+You can also overwrite the pattern in the configuration.
+
+```js
+replacer: {
+        pattern: /\.jsx?$/, // Here you can specify the the pattern
+        dict: [
+            // Replace pubnub pub key in js files
+            {
+                key: "__PUBLICURL__",
+            },
+            {
+                key: "__SUBROUTE__",
+            },
+        ],
+    },
+```
+
 ## Configuration
 
 ```js
