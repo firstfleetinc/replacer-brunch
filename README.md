@@ -49,7 +49,6 @@ You can also overwrite the pattern in the configuration.
 replacer: {
         pattern: /\.jsx?$/, // Here you can specify the the pattern
         dict: [
-            // Replace pubnub pub key in js files
             {
                 key: "__PUBLICURL__",
             },
