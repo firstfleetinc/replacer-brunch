@@ -22,7 +22,7 @@
     "chai-as-promised": "^6.0.0",
     "eslint": "4.x",
     "eslint-config-brunch": "brunch/eslint-config-brunch",
-    "mocha": "^5.2.0"
+    "mocha": "^9.2.1"
   },
   "eslintConfig": {
     "extends": "brunch"
